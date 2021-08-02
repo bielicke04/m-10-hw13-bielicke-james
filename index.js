@@ -1,9 +1,12 @@
 // capture references to important DOM elements
 
+
+/***************************** */
 // 1 - CONVERT VAR DECLARATION 
 let weatherContainer = document.getElementById('weather');
 let formEl = document.querySelector('form');
 let inputEl = document.querySelector('input');
+
 
 
 formEl.onsubmit = function(e) {
@@ -37,31 +40,20 @@ function getWeather(query) {
     .then(function(res) {
       return res.json()
     })
+    
     .then(function(data) {
       // location not found, throw error/reject promise
       if (data.cod === "404") throw new Error('location not found')
-
-
-
-
-
       // create weather icon URL
       var iconUrl = 'https://openweathermap.org/img/wn/' +
         data.weather[0].icon +
         '@2x.png'
-
       var description = data.weather[0].description
-
-      const { return } = description
-
       var actualTemp = data.main.temp
       var feelsLikeTemp = data.main.feels_like
-      //var place = data.name + ", " + data.sys.country
       var place = data.name + ", " + data.sys.country
       // create JS date object from Unix timestamp
       var updatedAt = new Date(data.dt * 1000)
-
-
       // this object is used by displayWeatherInfo to update the HTML
       return {
         coords: data.coord.lat + ',' + data.coord.lon,
@@ -72,9 +64,10 @@ function getWeather(query) {
         place: place,
         updatedAt: updatedAt
       }
-
     })
 }
+
+
 
 
 
@@ -93,11 +86,10 @@ function displayWeatherInfo(weatherObj) {
   // clears any previous weather info
   weatherContainer.innerHTML = "";
 
-
+/***************************** */
 // 3 - ARROW FUNCTION
 
   // inserts a linebreak <br> to weather section tag
-
   const addBreak = () => weatherContainer.appendChild(document.createElement('br'))
 
 
@@ -113,6 +105,11 @@ function displayWeatherInfo(weatherObj) {
   whereLink.href = "https://www.google.com/maps/search/?api=1&query=" + weatherObj.coords
   whereLink.target = "__BLANK"
   weatherContainer.appendChild(whereLink)
+
+  /***************************** */
+  // 5 - DESTRUCTURING
+  const { textContent, href, target } = whereLink;
+
 
   // weather icon img
   var icon = document.createElement('img')
@@ -135,8 +132,7 @@ function displayWeatherInfo(weatherObj) {
   weatherContainer.appendChild(temp)
 
 
-
-
+/***************************** */
  // 4 - TEMPLATE LITERAL + STRING INTERPOLATION
 
   // "feels like" temperature
@@ -159,4 +155,3 @@ function displayWeatherInfo(weatherObj) {
     )
   weatherContainer.appendChild(updatedAt)
 }
-
