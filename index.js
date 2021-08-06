@@ -137,7 +137,6 @@ function displayWeatherInfo(weatherObj) {
   weatherContainer.appendChild(temp)
 
 
-  
 /***************************** */
  // 4 - TEMPLATE LITERAL + STRING INTERPOLATION
 
