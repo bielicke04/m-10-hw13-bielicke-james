@@ -3,13 +3,15 @@
 
 /***************************** */
 // 1 - CONVERT VAR DECLARATION 
-let weatherContainer = document.getElementById('weather');
-let formEl = document.querySelector('form');
-let inputEl = document.querySelector('input');
+const weatherContainer = document.getElementById('weather');
+const formEl = document.querySelector('form');
+const inputEl = document.querySelector('input');
 
 
+/***************************** */
+// 2 - ASYNC/AWAIT
 
-formEl.onsubmit = function(e) {
+formEl.onsubmit = async function(e) {
   // prevent the page from refreshing
   e.preventDefault();
 
@@ -18,9 +20,12 @@ formEl.onsubmit = function(e) {
   // abort API call if user entered no value
   if (!userInput) return
   // call the API and then update the page
-  getWeather(userInput)
-    .then(displayWeatherInfo)
-    .catch(displayLocNotFound)
+  try {
+    const weatherInfo = await getWeather(userInput)
+    displayWeatherInfo(weatherInfo)
+  } catch (err) {
+    displayLocNotFound()
+  }
 
   // reset form field to a blank state
   inputEl.value = ""
@@ -54,21 +59,24 @@ function getWeather(query) {
       var place = data.name + ", " + data.sys.country
       // create JS date object from Unix timestamp
       var updatedAt = new Date(data.dt * 1000)
+
+
+
+       /***************************** */
+      // 5 - DESTRUCTURING
+
       // this object is used by displayWeatherInfo to update the HTML
       return {
         coords: data.coord.lat + ',' + data.coord.lon,
-        description: description,
-        iconUrl: iconUrl,
-        actualTemp: actualTemp,
-        feelsLikeTemp: feelsLikeTemp,
-        place: place,
-        updatedAt: updatedAt
+        description,
+        iconUrl,
+        actualTemp,
+        feelsLikeTemp,
+        place,
+        updatedAt,
       }
     })
 }
-
-
-
 
 
 // show error message when location isn't found
@@ -85,6 +93,8 @@ function displayLocNotFound() {
 function displayWeatherInfo(weatherObj) {
   // clears any previous weather info
   weatherContainer.innerHTML = "";
+
+
 
 /***************************** */
 // 3 - ARROW FUNCTION
@@ -105,11 +115,6 @@ function displayWeatherInfo(weatherObj) {
   whereLink.href = "https://www.google.com/maps/search/?api=1&query=" + weatherObj.coords
   whereLink.target = "__BLANK"
   weatherContainer.appendChild(whereLink)
-
-  /***************************** */
-  // 5 - DESTRUCTURING
-  const { textContent, href, target } = whereLink;
-
 
   // weather icon img
   var icon = document.createElement('img')
@@ -132,6 +137,7 @@ function displayWeatherInfo(weatherObj) {
   weatherContainer.appendChild(temp)
 
 
+  
 /***************************** */
  // 4 - TEMPLATE LITERAL + STRING INTERPOLATION
 
