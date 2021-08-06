@@ -1,3 +1,11 @@
+Conversion Changes Made:
+1. Convert Var Declaration: LINE(s) 6-9
+2. Async/Await: Line(s) 14-28
+3. Arrow Function: Line - 103
+4. Temp Literal + String Interpolation: Line(s) 145-147
+5. Destructuring: Line(s) 71-76
+
+
 # ES6 Refactor
 
 &nbsp;
